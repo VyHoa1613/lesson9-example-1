@@ -2,8 +2,15 @@ var db = require("../db");
 var shortid = require('shortid')
 
 module.exports.indexTransaction = (req, res) =>{
+    var usersTran = db.get("transaction").value();
+    var takeUser =usersTran.map(function(item){
+        return{
+            user: db.get("users").find({id:item.userId}).value().name,
+            book: db.get("books").find({id:item.bookId}).value().title
+        }
+    })
     res.render("transaction/borrow",{
-        borrows:db.get("transaction").value()
+        borrows:takeUser
     })
 }
 
